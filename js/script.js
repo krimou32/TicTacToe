@@ -1,18 +1,20 @@
-var tiles = document.getElementsByClassName("tile");
-var buttons = document.getElementsByClassName("button");
+'use strict'
+
+const tiles = document.getElementsByClassName("tile");
+const buttons = document.getElementsByClassName("button");
 
 // State of tiles: 0 = not taken; 1 = computer; -1 = player
-var state = [0,0,0,0,0,0,0,0,0];
-var game = true;
+let state = [0,0,0,0,0,0,0,0,0];
+let game = true;
 
-var human = false;
-var computer = true;
+let human = false;
+let computer = true;
 
-var humval = -1;
-var comval = 1;
+const humval = -1;
+const comval = 1;
 
 //All possible winning combinations
-var winMatrix = [
+const winMatrix = [
   [0,1,2],
   [3,4,5],
   [6,7,8],
@@ -26,13 +28,13 @@ var winMatrix = [
 function reset() {
 
   //Reset game to original state
-  for (var i = 0; i < 9; i++) {
+  for (let i = 0; i < 9; i++) {
     tiles[i].style.background = "#fff";
     state[i] = 0;
   }
 
   //Reset bottom buttons style
-  for (var i = 0; i < 2; i++) {
+  for (let i = 0; i < 2; i++) {
     buttons[i].style.width = "15.5vh";
     buttons[i].style.margin = "0.5vh";
     buttons[i].style.opacity = "1";
@@ -51,7 +53,7 @@ function claim(clicked) {
 
   //Checks if the clicked tile has not already been taken.
   // If not, sets tile to player's color and calls AI to play
-  for (var i = 0; i < 9; i++) {
+  for (let i = 0; i < 9; i++) {
     if (tiles[i] == clicked && state[i] === 0) {
       set(i, human);
       callAI();
@@ -96,12 +98,12 @@ function checkWin(board, player) {
   //If the player is human, sets value to humval (-1). Otherwise set it to comval (1).
   var value = player == human ? humval : comval;
 
-  for (var i = 0; i < 8; i++){
+  for (let i = 0; i < 8; i++){
 
-    var win = true;
+    let win = true;
 
     //Loops trhough all winning combinations to determine whether the last player who made a move won or not.
-    for (var t = 0; t < 3; t++) {
+    for (let t = 0; t < 3; t++) {
       if(board[winMatrix[i][t]] != value) {
         win = false;
         break;
@@ -116,7 +118,7 @@ function checkWin(board, player) {
 }
 
 function checkFull(board) {
-  for (var i = 0; i < 9; i++) {
+  for (let i = 0; i < 9; i++) {
     if(board[i] === 0) {
       return false;
     }
@@ -138,18 +140,18 @@ function aiturn(board, depth, player){
     return 0;
   }
 
-  var value = player == human ? humval : comval;
+  let value = player == human ? humval : comval;
 
-  var max = -Infinity;
-  var index = 0;
+  let max = -Infinity;
+  let index = 0;
 
   //Loops through every possible move to keep the best one
-  for(var i = 0; i < 9; i++) {
+  for(let i = 0; i < 9; i++) {
     if(board[i] === 0){
-      var newboard = board.slice();
+      let newboard = board.slice();
       newboard[i] = value;
 
-      var moveval = -aiturn(newboard, depth + 1, !player);
+      let moveval = -aiturn(newboard, depth + 1, !player);
 
       if(moveval > max){
         max = moveval;
